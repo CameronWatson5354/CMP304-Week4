@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "M:\\YEAR 3\\CMP304\\CMP304-Week4\\Fuzzy Logic - C\u002B\u002B\\Fuzzy Logic - C\u002B\u002B\\FuzzyLiteProject - With Loader\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{8236EC2A-FEB7-49FB-BE15-F9412527604E}|FuzzyLiteProject\\FuzzyLiteProject.vcxproj|M:\\YEAR 3\\CMP304\\CMP304-Week4\\Fuzzy Logic - C\u002B\u002B\\Fuzzy Logic - C\u002B\u002B\\FuzzyLiteProject - With Loader\\FuzzyLiteProject\\Source.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{8236EC2A-FEB7-49FB-BE15-F9412527604E}|FuzzyLiteProject\\FuzzyLiteProject.vcxproj|solutionrelative:FuzzyLiteProject\\Source.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Source.cpp",
+              "DocumentMoniker": "M:\\YEAR 3\\CMP304\\CMP304-Week4\\Fuzzy Logic - C\u002B\u002B\\Fuzzy Logic - C\u002B\u002B\\FuzzyLiteProject - With Loader\\FuzzyLiteProject\\Source.cpp",
+              "RelativeDocumentMoniker": "FuzzyLiteProject\\Source.cpp",
+              "ToolTip": "M:\\YEAR 3\\CMP304\\CMP304-Week4\\Fuzzy Logic - C\u002B\u002B\\Fuzzy Logic - C\u002B\u002B\\FuzzyLiteProject - With Loader\\FuzzyLiteProject\\Source.cpp",
+              "RelativeToolTip": "FuzzyLiteProject\\Source.cpp",
+              "ViewState": "AgIAADMAAAAAAAAAAAAAAFAAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-09-27T14:23:49.629Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
