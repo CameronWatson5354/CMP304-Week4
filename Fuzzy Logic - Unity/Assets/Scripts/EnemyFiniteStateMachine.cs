@@ -14,6 +14,7 @@ public class EnemyFiniteStateMachine : MonoBehaviour {
 	IFuzzyEngine engine; // the Fuzzy Logic Engine, which uses the FLS Library
 	LinguisticVariable distance; // the input variable - distance to the player
 	LinguisticVariable speed; // the output variable - speed multiplier for the enemmies
+	LinguisticVariable playerSpeed;
 
 
     public float patrolSpeed = 1f;
@@ -68,26 +69,40 @@ public class EnemyFiniteStateMachine : MonoBehaviour {
         var far = distance.MembershipFunctions.AddTrapezoid("far", 2, 6, 10, 12);
         var distant = distance.MembershipFunctions.AddTrapezoid("distant", 8, 12, 20, 20);
 
+		//input variable -> speed
+		playerSpeed = new LinguisticVariable("playerSpeed");
+		var slowPlayerSpeed = playerSpeed.MembershipFunctions.AddTrapezoid("slowPlayerSpeed", 0.0, 0.0, 1.0, 2.0);
+		var mediumPlayerSpeed = playerSpeed.MembershipFunctions.AddTrapezoid("mediumPlayerSpeed", 1.0, 2.0, 5.0, 6.0);
+		var fastPlayerSpeed = playerSpeed.MembershipFunctions.AddTrapezoid("fastPlayerSpeed", 4.0, 7.0, 10.0, 10.0);
 
 		// output variable - the chase speed multiplier
 		// we use three terms - slow, medium and fast
         speed = new LinguisticVariable("chase");
-        var slowSpeed = speed.MembershipFunctions.AddTrapezoid("slowSpeed", 0.2, 0.4, 0.6, 0.8);
+        var slowSpeed = speed.MembershipFunctions.AddTrapezoid("slowSpeed", 0.2, 0.4, 0.6, 2.0);
         var mediumSpeed = speed.MembershipFunctions.AddTrapezoid("mediumSpeed", 0.5, 0.8, 1.2, 1.5);
-        var fastSpeed = speed.MembershipFunctions.AddTrapezoid("fastSpeed", 1, 1.2, 2, 2);
+        var fastSpeed = speed.MembershipFunctions.AddTrapezoid("fastSpeed", 1, 1.2, 5.0, 5.0);
 
 		// define the rules used by the engine
         engine = new FuzzyEngineFactory().Default();
-        var rule1 = Rule.If(distance.Is(close)).Then(speed.Is(slowSpeed));
-        var rule2 = Rule.If(distance.Is(medium).Or(distance.Is(distant))).Then(speed.Is(mediumSpeed));
+        var rule1 = Rule.If(distance.Is(close).Or(playerSpeed.Is(fastPlayerSpeed))).Then(speed.Is(slowSpeed));
+        var rule2 = Rule.If(distance.Is(medium)).Then(speed.Is(mediumSpeed));
         var rule3 = Rule.If(distance.Is(far)).Then(speed.Is(fastSpeed));
 
-		// add the rules to the engine
-        engine.Rules.Add(rule1);
-        engine.Rules.Add(rule2);
-        engine.Rules.Add(rule3);
+		//player speed rules
+		var rule4 = Rule.If(playerSpeed.Is(slowPlayerSpeed)).Then(speed.Is(slowSpeed));
+		var rule5 = Rule.If(playerSpeed.Is(mediumPlayerSpeed)).Then(speed.Is(mediumSpeed));
+		var rule6 = Rule.If(playerSpeed.Is(fastPlayerSpeed).Or(distance.Is(far))).Then(speed.Is(fastSpeed));
 
-    }
+		// add the rules to the engine
+		engine.Rules.Add(rule1);
+		engine.Rules.Add(rule2);
+		engine.Rules.Add(rule3);
+
+		//engine.Rules.Add(rule4);
+		//engine.Rules.Add(rule5);
+		//engine.Rules.Add(rule6);
+
+	}
 	public void StopBots()
 	{
         chaseSpeed = 0f;
@@ -149,7 +164,10 @@ public class EnemyFiniteStateMachine : MonoBehaviour {
 				// use the output from the fuzzy engine to adjust the speed
 				// maxSpeed controls the speed at which the enemy moves
 				// - direction is important (+ve or -ve) 
-				float fuzzyMultiplier  = getSpeedMultiplierForDistance(GetHorizontalDistance());
+				float fuzzyMultiplier  = getSpeedMultiplierForDistance(GetHorizontalDistance(), player.GetComponent<Rigidbody2D>().velocity.x);
+				Debug.Log(fuzzyMultiplier);
+				//Debug.Log(player.GetComponent<Rigidbody2D>().velocity.x);
+
 				if(chaseSpeed > 0)
                     chaseSpeed = baseSpeed * fuzzyMultiplier;
 				else
@@ -189,10 +207,10 @@ public class EnemyFiniteStateMachine : MonoBehaviour {
 	/**
 	 * getSpeedMultiplierForDistance will the fuzzy logic engine to calculate and return a multiplier based on parameter distance
 	 */
-	float getSpeedMultiplierForDistance(float distance)
+	float getSpeedMultiplierForDistance(float distance, float playerSpeed)
 	{ 
 		//we pass in the absolute distance as our input, it does not matter if the player is left or right of the enemy
-		return (float)engine.Defuzzify(new { distance = (double)Math.Abs(distance) }); 
+		return (float)engine.Defuzzify(new { playerSpeed = (double)Math.Abs(playerSpeed), distance =  (double)Math.Abs(distance) }); 
     }
 
 	float GetHorizontalDistance()
